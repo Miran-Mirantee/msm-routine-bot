@@ -31,7 +31,7 @@ def main():
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
         open_change_character(char['imgUrl'])
-        do_daily_alt(char['doElite'], char['eliteLvl'])
+        do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
         
     for char in main_data:
         # search_char(char['imgUrl'])
@@ -168,7 +168,7 @@ def open_guild(do_elite: bool):
         pyautogui.press('esc')
     return
 
-def do_daily_alt(do_elite: bool, elite_lvl: int | None):
+def do_daily_alt(do_elite: bool, elite_lvl: int | None, do_cdd: bool):
     open_menu()
     open_guild(do_elite)
     if do_elite:
@@ -177,7 +177,10 @@ def do_daily_alt(do_elite: bool, elite_lvl: int | None):
     open_dungeons() 
     if do_elite:
         open_elite_dungeon(elite_lvl)     
-    open_daily_dungeon()
+    if do_cdd:
+        open_daily_dungeon()
+    else: 
+        wait_n_click('./imgs/buttons/close.png')
     open_mail()
     open_menu()
     if do_elite:
