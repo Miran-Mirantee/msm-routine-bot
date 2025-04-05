@@ -10,9 +10,9 @@ from datetime import datetime
 # - do elite dungeon the entire account (is this a good idea?)
 
 # Load data
-with open("alt.json", "r") as f:
+with open("./json/alt.json", "r") as f:
     alt_data = json.load(f)
-with open("main.json", "r") as f:
+with open("./json/main.json", "r") as f:
     main_data = json.load(f)
 
 last_click_time = None  # Stores the timestamp of the last click
