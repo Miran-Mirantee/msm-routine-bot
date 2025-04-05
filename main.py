@@ -158,7 +158,7 @@ def open_change_character(img_url: str):
 def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/guild.png')
     if do_elite:
-        wait_n_click('./imgs/buttons/guild-claim.png')
+        wait_n_click('./imgs/buttons/guild-claim.png', timeout=1)
     else:
         time.sleep(1)
         
@@ -257,8 +257,8 @@ def open_tasks_main():
     wait_n_click('./imgs/buttons/tasks.png')
     wait_n_click('./imgs/buttons/tasks-get-all.png')
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/tasks-get-all.png')
-    wait_n_click('./imgs/buttons/confirm.png')
+    wait_n_click('./imgs/buttons/tasks-get-all.png', timeout=1)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=1)
     wait_n_click('./imgs/buttons/tasks-daily-hunt.png')
     wait_n_click('./imgs/buttons/tasks-daily-hunt-get-all.png')
     wait_n_click('./imgs/buttons/confirm.png')
