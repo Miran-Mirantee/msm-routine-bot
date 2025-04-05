@@ -135,7 +135,7 @@ def open_daily_dungeon():
 def open_mail(): 
     wait_n_click('./imgs/buttons/mail.png')
     wait_n_click('./imgs/buttons/mail-personal.png')
-    wait_n_click('./imgs/buttons/mail-receive.png')
+    wait_n_click('./imgs/buttons/mail-receive.png', timeout=1)
     wait_n_click('./imgs/buttons/confirm.png', timeout=1)
     wait_n_click('./imgs/buttons/close.png')
     return
