@@ -24,9 +24,10 @@ def main():
     
     start_time = time.time()  # Start timer
     
-    # locate('./imgs/buttons/elite-dungeon-go-to-menu-chaos.png')
+    # locate('./imgs/buttons/elite-dungeon-200.png')
     
     open_menu()
+    # 47.35 mins
     for char in alt_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
@@ -67,8 +68,9 @@ def locate(imgUrl: str):
     pyautogui.moveTo(x, y)
     return
 
-def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.7) -> bool:
+def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.75) -> bool:
     start_time = time.time()
+    time.sleep(wait)
 
     while True:
         if time.time() - start_time > timeout:
@@ -88,7 +90,7 @@ def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25)
     start_time = time.time()
     width, height = pyautogui.size()
     pyautogui.moveTo(width / 2 - 40, height / 2)
-    
+    time.sleep(2)
     while True:
         if time.time() - start_time > timeout:
             return False  # Timeout reached, exit loop
@@ -135,8 +137,8 @@ def open_daily_dungeon():
 def open_mail(): 
     wait_n_click('./imgs/buttons/mail.png')
     wait_n_click('./imgs/buttons/mail-personal.png')
-    wait_n_click('./imgs/buttons/mail-receive.png', timeout=1)
-    wait_n_click('./imgs/buttons/confirm.png', timeout=1)
+    wait_n_click('./imgs/buttons/mail-receive.png', timeout=2)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=2)
     wait_n_click('./imgs/buttons/close.png')
     return
 
@@ -158,7 +160,7 @@ def open_change_character(img_url: str):
 def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/guild.png')
     if do_elite:
-        wait_n_click('./imgs/buttons/guild-claim.png', timeout=1)
+        wait_n_click('./imgs/buttons/guild-claim.png', timeout=2)
     else:
         time.sleep(1)
         
@@ -197,7 +199,7 @@ def open_elite_dungeon_main():
     wait_n_click('./imgs/buttons/elite-dungeon-go-to-menu-chaos.png')
     
     # Do 200 later
-    wait_n_click('./imgs/buttons/elite-dungeon-200.png')
+    wait_n_click('./imgs/buttons/elite-dungeon-200.png', wait=1)
     wait_n_click('./imgs/buttons/elite-dungeon-create-room.png')
     wait_n_click('./imgs/buttons/confirm.png')
     wait_n_click('./imgs/buttons/elite-dungeon-start.png')
@@ -246,11 +248,11 @@ def open_dimension_invasion():
 
 def open_mini_dungeon():
     wait_n_click('./imgs/buttons/mini-dungeon.png')
-    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=1)
+    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=2)
     wait_n_click('./imgs/buttons/mini-dungeon-auto-select.png')
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
-    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900)
+    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=2)
     time.sleep(1)
     wait_n_click('./imgs/buttons/ab-confirm.png')
     # locate_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png') # this works too, just in case
@@ -260,8 +262,8 @@ def open_tasks_main():
     wait_n_click('./imgs/buttons/tasks.png')
     wait_n_click('./imgs/buttons/tasks-get-all.png')
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/tasks-get-all.png', timeout=1)
-    wait_n_click('./imgs/buttons/confirm.png', timeout=1)
+    wait_n_click('./imgs/buttons/tasks-get-all.png', timeout=2)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=2)
     wait_n_click('./imgs/buttons/tasks-daily-hunt.png')
     wait_n_click('./imgs/buttons/tasks-daily-hunt-get-all.png')
     wait_n_click('./imgs/buttons/confirm.png')
@@ -278,7 +280,7 @@ def open_daily_quest():
     wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
     wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/confirm.png', timeout=1200)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=2)
     return
 
 def do_daily_main(gemColor: str):
