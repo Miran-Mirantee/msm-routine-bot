@@ -104,7 +104,7 @@ def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25)
             return True  # Image found, exit loop
         except pyautogui.ImageNotFoundException:
             pass
-        pyautogui.scroll(-1)
+        pyautogui.scroll(1)
         time.sleep(interval)  # Wait before checking again
         
 def open_menu(): 
