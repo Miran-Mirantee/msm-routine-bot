@@ -9,6 +9,9 @@ from datetime import datetime
 # - force the program to click until the image is gone
 # - do elite dungeon the entire account (is this a good idea?)
 
+# BUG:
+# - can't find the enter button after clicking the enter once (mini dungeon)
+
 # Load data
 with open("./json/alt.json", "r") as f:
     alt_data = json.load(f)
@@ -23,8 +26,6 @@ def main():
     time.sleep(3)
     
     start_time = time.time()  # Start timer
-    
-    # locate('./imgs/buttons/elite-dungeon-200.png')
     
     open_menu()
     # 47.35 mins
@@ -252,9 +253,8 @@ def open_mini_dungeon():
     wait_n_click('./imgs/buttons/mini-dungeon-auto-select.png')
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
-    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=2)
-    time.sleep(1)
-    wait_n_click('./imgs/buttons/ab-confirm.png')
+    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=5)
+    wait_n_click('./imgs/buttons/ab-confirm.png', wait=2)
     # locate_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png') # this works too, just in case
     return
 
@@ -273,14 +273,14 @@ def open_tasks_main():
 def open_daily_quest():
     wait_n_click('./imgs/buttons/daily-quest.png')
     wait_n_click('./imgs/buttons/daily-quest-progress.png')
-    wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=2)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
     return
 
 def do_daily_main(gemColor: str):
