@@ -12,6 +12,13 @@ from datetime import datetime
 # BUG:
 # - can't find the enter button after clicking the enter once (mini dungeon)
 
+from dataclasses import dataclass
+
+@dataclass
+class MousePos:
+    x: int
+    y: int
+
 # Load data
 with open("./json/alt.json", "r") as f:
     alt_data = json.load(f)
@@ -23,9 +30,11 @@ last_click_time = None  # Stores the timestamp of the last click
 def main():
     print('Starting...')
     pyautogui.FAILSAFE = True
-    time.sleep(3)
+    time.sleep(2)
     
     start_time = time.time()  # Start timer
+    
+    # open_af()
     
     open_menu()
     # 47.35 mins
@@ -64,14 +73,16 @@ def human_pause():
     return
 
 def locate(imgUrl: str):
-    pos = pyautogui.locateOnScreen(imgUrl, confidence=0.75)
-    x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
-    pyautogui.moveTo(x, y)
-    return
-
+    try:
+        pos = pyautogui.locateOnScreen(imgUrl, confidence=0.75)
+        x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
+        pyautogui.moveTo(x, y)
+        return True
+    except pyautogui.ImageNotFoundException:
+        return False
+    
 def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.75) -> bool:
     start_time = time.time()
-    time.sleep(wait)
 
     while True:
         if time.time() - start_time > timeout:
@@ -81,6 +92,7 @@ def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, c
             x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
             pyautogui.moveTo(x, y)
             human_pause()
+            time.sleep(wait)
             click()
             return True  # Image found, exit loop
         except pyautogui.ImageNotFoundException:
@@ -273,14 +285,46 @@ def open_tasks_main():
 def open_daily_quest():
     wait_n_click('./imgs/buttons/daily-quest.png')
     wait_n_click('./imgs/buttons/daily-quest-progress.png')
-    # wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
-    # wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
-    # wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
-    # wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
-    # wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
-    # wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
     wait_n_click('./imgs/buttons/confirm.png')
     wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
+    return
+
+# 1585 600
+
+def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int = 1, timeout: float = 300.0, interval: float = 0.25, sleep: float = 1.5) -> bool:
+    start_time = time.time()
+    pyautogui.moveTo(mouse_pos.x, mouse_pos.y)
+    time.sleep(sleep)
+    while True:
+        if time.time() - start_time > timeout:
+            return False  # Timeout reached, exit loop
+        try:
+            pos = pyautogui.locateOnScreen(image_path, confidence=0.95)  # Adjust confidence if needed
+            x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
+            pyautogui.moveTo(x, y)
+            human_pause()
+            click()
+            return True  # Image found, exit loop
+        except pyautogui.ImageNotFoundException:
+            pass
+        pyautogui.scroll(1 * direction)
+        time.sleep(interval)  # Wait before checking again
+
+def open_af(): 
+    # locate('./imgs/buttons/arcane-power-field.png')
+    wait_n_click('./imgs/buttons/arcane-power-field.png')
+    found_no_party = locate('./imgs/buttons/af-no-party.png')
+    if found_no_party == False:
+        search_n_scroll_n_click('./imgs/buttons/af-170.png', MousePos(1585, 600))
+        search_n_scroll_n_click('./imgs/buttons/af-party-3.png', MousePos(1585, 600), -1)
+    else:
+        print('well that sucks')
     return
 
 def do_daily_main(gemColor: str):
