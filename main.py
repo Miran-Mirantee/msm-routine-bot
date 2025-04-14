@@ -34,21 +34,21 @@ def main():
     
     start_time = time.time()  # Start timer
     
-    # open_af()
+    open_af()
     
-    open_menu()
-    # 47.35 mins
-    for char in alt_data:
-        # search_char(char['imgUrl'])
-        print(char['imgUrl'])
-        open_change_character(char['imgUrl'])
-        do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
+    # open_menu()
+    # # 47.35 mins
+    # for char in alt_data:
+    #     # search_char(char['imgUrl'])
+    #     print(char['imgUrl'])
+    #     open_change_character(char['imgUrl'])
+    #     do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
         
-    for char in main_data:
-        # search_char(char['imgUrl'])
-        print(char['imgUrl'])
-        open_change_character(char['imgUrl'])
-        do_daily_main(char['gemColor'])
+    # for char in main_data:
+    #     # search_char(char['imgUrl'])
+    #     print(char['imgUrl'])
+    #     open_change_character(char['imgUrl'])
+    #     do_daily_main(char['gemColor'])
         
     end_time = time.time()  # End timer
     elapsed_time = end_time - start_time
@@ -81,7 +81,7 @@ def locate(imgUrl: str):
     except pyautogui.ImageNotFoundException:
         return False
     
-def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.75) -> bool:
+def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.5) -> bool:
     start_time = time.time()
 
     while True:
@@ -97,6 +97,7 @@ def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, c
             return True  # Image found, exit loop
         except pyautogui.ImageNotFoundException:
             pass
+        # pyautogui.moveRel(100, 100)
         time.sleep(interval)  # Wait before checking again
         
 def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25) -> bool:
@@ -118,6 +119,10 @@ def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25)
             pass
         pyautogui.scroll(1)
         time.sleep(interval)  # Wait before checking again
+    
+def put_cursor_away():
+    pyautogui.moveTo(random.randint(499, 1416),random.randint(3, 93), 2)
+    return
         
 def open_menu(): 
     wait_n_click('./imgs/buttons/menu.png')
@@ -265,6 +270,7 @@ def open_mini_dungeon():
     wait_n_click('./imgs/buttons/mini-dungeon-auto-select.png')
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
+    put_cursor_away()
     wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=5)
     wait_n_click('./imgs/buttons/ab-confirm.png', wait=2)
     # locate_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png') # this works too, just in case
@@ -297,10 +303,9 @@ def open_daily_quest():
 
 # 1585 600
 
-def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int = 1, timeout: float = 300.0, interval: float = 0.25, sleep: float = 1.5) -> bool:
+def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int = 1, timeout: float = 300.0, interval: float = 0.25, sleep: float = 0.5, stop_image_path: str | None = None) -> bool:
     start_time = time.time()
     pyautogui.moveTo(mouse_pos.x, mouse_pos.y)
-    time.sleep(sleep)
     while True:
         if time.time() - start_time > timeout:
             return False  # Timeout reached, exit loop
@@ -308,23 +313,53 @@ def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int
             pos = pyautogui.locateOnScreen(image_path, confidence=0.95)  # Adjust confidence if needed
             x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
             pyautogui.moveTo(x, y)
+            time.sleep(sleep)
             human_pause()
             click()
             return True  # Image found, exit loop
         except pyautogui.ImageNotFoundException:
             pass
+        if stop_image_path:
+            res = locate(stop_image_path)
+            if res:
+                return False
         pyautogui.scroll(1 * direction)
         time.sleep(interval)  # Wait before checking again
 
 def open_af(): 
-    # locate('./imgs/buttons/arcane-power-field.png')
     wait_n_click('./imgs/buttons/arcane-power-field.png')
+    search_n_scroll_n_click('./imgs/buttons/af-550.png', MousePos(1585, 600))
+    
     found_no_party = locate('./imgs/buttons/af-no-party.png')
-    if found_no_party == False:
-        search_n_scroll_n_click('./imgs/buttons/af-170.png', MousePos(1585, 600))
-        search_n_scroll_n_click('./imgs/buttons/af-party-3.png', MousePos(1585, 600), -1)
-    else:
-        print('well that sucks')
+
+    if found_no_party:  # same as "if found_no_party == True"
+        wait_n_click('./imgs/buttons/create.png')
+        put_cursor_away()
+        wait_n_click('./imgs/buttons/create-orange.png')
+        wait_n_click('./imgs/buttons/auto-battle.png')
+        put_cursor_away()
+        wait_n_click('./imgs/buttons/auto-battle.png')
+        wait_n_click('./imgs/buttons/start.png')
+        return
+    
+    party_paths = [
+        ('./imgs/buttons/af-party-5.png', -1),
+        ('./imgs/buttons/af-party-4.png', 1),
+        ('./imgs/buttons/af-party-3.png', -1),
+        ('./imgs/buttons/af-party-2.png', 1),
+        ('./imgs/buttons/af-party-1.png', -1),
+    ]
+
+    for path, direction in party_paths:
+        if search_n_scroll_n_click(path, MousePos(1585, 600), direction, stop_image_path='./imgs/buttons/af-more-party.png'):
+            break
+        
+    wait_n_click('./imgs/buttons/apply.png')
+    wait_n_click('./imgs/buttons/confirm.png')
+    wait_n_click('./imgs/buttons/auto-battle.png')
+    put_cursor_away()
+    wait_n_click('./imgs/buttons/auto-battle.png')
+    wait_n_click('./imgs/buttons/start.png')
     return
 
 def do_daily_main(gemColor: str):
