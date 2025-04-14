@@ -1,6 +1,5 @@
 imgs/characters/
-back
-# alt.json
-# back-alt.json
-# main.json
-# back-main.json
+json/alt.json
+json/back-alt.json
+json/main.json
+json/back-main.json
