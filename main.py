@@ -24,32 +24,34 @@ with open("./json/alt.json", "r") as f:
     alt_data = json.load(f)
 with open("./json/main.json", "r") as f:
     main_data = json.load(f)
+with open("./json/farm.json", "r") as f:
+    farm_data = json.load(f)
 
 last_click_time = None  # Stores the timestamp of the last click
 
 def main():
     print('Starting...')
     pyautogui.FAILSAFE = True
-    time.sleep(2)
+    time.sleep(3)
     
     start_time = time.time()  # Start timer
     
-    open_af()
+    open_menu()
+    # 47.35 mins
+    for char in alt_data:
+        # search_char(char['imgUrl'])
+        print(char['imgUrl'])
+        open_change_character(char['imgUrl'])
+        do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
+        
+    for char in main_data:
+        # search_char(char['imgUrl'])
+        print(char['imgUrl'])
+        open_change_character(char['imgUrl'])
+        do_daily_main(char['gemColor'])
     
-    # open_menu()
-    # # 47.35 mins
-    # for char in alt_data:
-    #     # search_char(char['imgUrl'])
-    #     print(char['imgUrl'])
-    #     open_change_character(char['imgUrl'])
-    #     do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
-        
-    # for char in main_data:
-    #     # search_char(char['imgUrl'])
-    #     print(char['imgUrl'])
-    #     open_change_character(char['imgUrl'])
-    #     do_daily_main(char['gemColor'])
-        
+    do_overnight_farming()
+    
     end_time = time.time()  # End timer
     elapsed_time = end_time - start_time
 
@@ -326,9 +328,26 @@ def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int
         pyautogui.scroll(1 * direction)
         time.sleep(interval)  # Wait before checking again
 
-def open_af(): 
+def do_daily_main(gemColor: str):
+    open_menu()
+    open_guild(True)
+    open_mail()
+    open_menu()
+    open_dungeons()
+    open_elite_dungeon_main()
+    open_daily_dungeon_main(gemColor)
+    open_dimension_invasion()
+    open_mini_dungeon()
+    open_menu()
+    open_tasks_main()
+    open_daily_quest()
+    open_mail()
+    open_menu()
+    return
+
+def open_af(af_image_path: str): 
     wait_n_click('./imgs/buttons/arcane-power-field.png')
-    search_n_scroll_n_click('./imgs/buttons/af-550.png', MousePos(1585, 600))
+    search_n_scroll_n_click(af_image_path, MousePos(1585, 600))
     
     found_no_party = locate('./imgs/buttons/af-no-party.png')
 
@@ -362,21 +381,32 @@ def open_af():
     wait_n_click('./imgs/buttons/start.png')
     return
 
-def do_daily_main(gemColor: str):
+def quit_this_damn_game():
+    time.sleep(5)
+    pyautogui.press('esc')
+    put_cursor_away()
+    wait_n_click('./imgs/buttons/yes.png')
+    return
+
+def turn_pc_off():
+    wait_n_click('./imgs/desktop-buttons/window.png')
+    wait_n_click('./imgs/desktop-buttons/power.png')
+    time.sleep(1)
+    # wait_n_click('./imgs/desktop-buttons/sleep.png')
+    wait_n_click('./imgs/desktop-buttons/power.png')
+    # wait_n_click('./imgs/desktop-buttons/sleep.png')
+    click()
+    return
+
+def do_overnight_farming():
+    open_change_character('./imgs/characters/Nyuko.png') # literally any character you don't plan on farming with
     open_menu()
-    open_guild(True)
-    open_mail()
+    open_change_character(farm_data['imgUrl']) # literally any character you don't plan on farming with
     open_menu()
     open_dungeons()
-    open_elite_dungeon_main()
-    open_daily_dungeon_main(gemColor)
-    open_dimension_invasion()
-    open_mini_dungeon()
-    open_menu()
-    open_tasks_main()
-    open_daily_quest()
-    open_mail()
-    open_menu()
+    open_af(farm_data['afImgUrl'])
+    quit_this_damn_game()
+    turn_pc_off()
     return
     
 if __name__ == "__main__":
