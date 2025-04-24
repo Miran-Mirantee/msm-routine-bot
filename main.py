@@ -84,8 +84,9 @@ def locate(imgUrl: str):
     except pyautogui.ImageNotFoundException:
         return False
     
-def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.5) -> bool:
+def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.5, sleep: float = 0.0) -> bool:
     start_time = time.time()
+    time.sleep(sleep)
 
     while True:
         if time.time() - start_time > timeout:
@@ -427,7 +428,7 @@ def quit_this_damn_game():
     return
 
 def turn_pc_off():
-    wait_n_click('./imgs/desktop-buttons/window.png')
+    wait_n_click('./imgs/desktop-buttons/window.png', sleep=1)
     wait_n_click('./imgs/desktop-buttons/power.png')
     time.sleep(1)
     # wait_n_click('./imgs/desktop-buttons/sleep.png')
