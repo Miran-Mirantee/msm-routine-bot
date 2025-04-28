@@ -1,22 +1,14 @@
 import pyautogui
 import time
-import random
 import json
 from datetime import datetime
+from util import wait_n_click, search_n_scroll_n_click, search_char, put_cursor_away, locate, click
+from models import MousePos
 
 # TODO:
-# - refactor code, re-organize (should I even bother?)
-# - force the program to click until the image is gone
 # - do elite dungeon the entire account (is this a good idea?)
 
 # BUG:
-
-from dataclasses import dataclass
-
-@dataclass
-class MousePos:
-    x: int
-    y: int
 
 # Load data
 with open("./json/alt.json", "r") as f:
@@ -56,76 +48,6 @@ def main():
     
     do_overnight_farming()
     
-def random_position(minX, minY, maxX, maxY):
-    x = random.randint(minX, maxX)  # Random x within range
-    y = random.randint(minY, maxY)  # Random y within range
-    return x, y  # Return as an array
-
-def click(): 
-    rand = random.uniform(0.1, 0.25)
-    pyautogui.mouseDown()
-    time.sleep(rand)
-    pyautogui.mouseUp()
-    return
-
-def human_pause(): 
-    rand = random.uniform(0.584, 1.282)
-    time.sleep(rand)
-    return
-
-def locate(imgUrl: str, confidence: float = 0.75):
-    try:
-        pos = pyautogui.locateOnScreen(imgUrl, confidence=confidence)
-        x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
-        pyautogui.moveTo(x, y)
-        return True
-    except pyautogui.ImageNotFoundException:
-        return False
-    
-def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, confidence: float = 0.85, wait: float = 0.5, sleep: float = 0.0) -> bool:
-    start_time = time.time()
-    time.sleep(sleep)
-
-    while True:
-        if time.time() - start_time > timeout:
-            return False  # Timeout reached, exit loop
-        try:
-            pos = pyautogui.locateOnScreen(image_path, confidence=confidence)  # Adjust confidence if needed
-            x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
-            pyautogui.moveTo(x, y)
-            human_pause()
-            time.sleep(wait)
-            click()
-            return True  # Image found, exit loop
-        except pyautogui.ImageNotFoundException:
-            pass
-        # pyautogui.moveRel(100, 100)
-        time.sleep(interval)  # Wait before checking again
-        
-def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25) -> bool:
-    start_time = time.time()
-    width, height = pyautogui.size()
-    pyautogui.moveTo(width / 2 - 40, height / 2)
-    time.sleep(2)
-    while True:
-        if time.time() - start_time > timeout:
-            return False  # Timeout reached, exit loop
-        try:
-            pos = pyautogui.locateOnScreen(image_path, confidence=0.95)  # Adjust confidence if needed
-            x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
-            pyautogui.moveTo(x, y)
-            human_pause()
-            click()
-            return True  # Image found, exit loop
-        except pyautogui.ImageNotFoundException:
-            pass
-        pyautogui.scroll(1)
-        time.sleep(interval)  # Wait before checking again
-    
-def put_cursor_away():
-    pyautogui.moveTo(random.randint(499, 1416),random.randint(3, 93), 2)
-    return
-        
 def open_menu(): 
     wait_n_click('./imgs/buttons/menu.png')
     return
@@ -137,9 +59,9 @@ def open_dungeons():
 def open_elite_dungeon(elite_lvl: int | None):
     wait_n_click('./imgs/buttons/elite-dungeon.png')
     if (elite_lvl == 200):
-        wait_n_click('./imgs/buttons/elite-dungeon-200.png')
+        wait_n_click('./imgs/buttons/elite-dungeon-200.png', confidence=0.9)
     elif (elite_lvl == 190):
-        wait_n_click('./imgs/buttons/elite-dungeon-190.png')
+        wait_n_click('./imgs/buttons/elite-dungeon-190.png', confidence=0.9)
     wait_n_click('./imgs/buttons/elite-dungeon-create-room.png')
     wait_n_click('./imgs/buttons/confirm.png')
     wait_n_click('./imgs/buttons/elite-dungeon-start.png')
@@ -219,7 +141,7 @@ def open_elite_dungeon_main():
     wait_n_click('./imgs/buttons/elite-dungeon-go-to-menu-chaos.png')
     
     # Do 200 later
-    wait_n_click('./imgs/buttons/elite-dungeon-200.png', wait=1)
+    wait_n_click('./imgs/buttons/elite-dungeon-200.png', wait=1, confidence=0.9)
     wait_n_click('./imgs/buttons/elite-dungeon-create-room.png')
     wait_n_click('./imgs/buttons/confirm.png')
     wait_n_click('./imgs/buttons/elite-dungeon-start.png')
@@ -303,30 +225,6 @@ def open_daily_quest():
     wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
     return
 
-def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int = 1, timeout: float = 300.0, interval: float = 0.25, sleep: float = 0.5, stop_image_path: str | None = None) -> bool:
-    start_time = time.time()
-    pyautogui.moveTo(mouse_pos.x, mouse_pos.y)
-    time.sleep(0.5)
-    while True:
-        if time.time() - start_time > timeout:
-            return False  # Timeout reached, exit loop
-        try:
-            pos = pyautogui.locateOnScreen(image_path, confidence=0.95)  # Adjust confidence if needed
-            x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
-            pyautogui.moveTo(x, y)
-            time.sleep(sleep)
-            human_pause()
-            click()
-            return True  # Image found, exit loop
-        except pyautogui.ImageNotFoundException:
-            pass
-        if stop_image_path:
-            res = locate(stop_image_path)
-            if res:
-                return False
-        pyautogui.scroll(1 * direction)
-        time.sleep(interval)  # Wait before checking again
-
 def do_daily_main(gemColor: str):
     open_menu()
     open_guild(True)
@@ -355,6 +253,7 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
 
     search_n_scroll_n_click(farm_image_path, MousePos(1585, 600))
     
+    time.sleep(0.5)
     found_no_party = locate('./imgs/buttons/af-no-party.png')
 
     if found_no_party:  # same as "if found_no_party == True"
