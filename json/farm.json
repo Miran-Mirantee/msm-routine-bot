@@ -1,4 +1,5 @@
 {
   "imgUrl": "./imgs/characters/characterName.png",
-  "afImgUrl": "./imgs/buttons/af-170.png"
+  "farmImgUrl": "./imgs/buttons/af-170.png",
+  "searchStopImgUrl": "./imgs/buttons/af-170-stop.png"
 }

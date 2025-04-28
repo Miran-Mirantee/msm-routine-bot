@@ -10,7 +10,6 @@ from datetime import datetime
 # - do elite dungeon the entire account (is this a good idea?)
 
 # BUG:
-# - Need to fix confidence of image when farming AF
 
 from dataclasses import dataclass
 
@@ -35,28 +34,27 @@ def main():
     time.sleep(3)
     
     start_time = time.time()  # Start timer
-    
+        
     open_menu()
     # 47.35 mins
-    for char in alt_data:
-        # search_char(char['imgUrl'])
-        print(char['imgUrl'])
-        open_change_character(char['imgUrl'])
-        do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
-        
     for char in main_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
         open_change_character(char['imgUrl'])
         do_daily_main(char['gemColor'])
     
+    for char in alt_data:
+        # search_char(char['imgUrl'])
+        print(char['imgUrl'])
+        open_change_character(char['imgUrl'])
+        do_daily_alt(char['doElite'], char['eliteLvl'], char['doCdd'])
     
     end_time = time.time()  # End timer
     elapsed_time = end_time - start_time
 
     print(f"Execution time: {elapsed_time:.4f} seconds")
     
-    do_overnight_farming_af()
+    do_overnight_farming()
     
 def random_position(minX, minY, maxX, maxY):
     x = random.randint(minX, maxX)  # Random x within range
@@ -75,9 +73,9 @@ def human_pause():
     time.sleep(rand)
     return
 
-def locate(imgUrl: str):
+def locate(imgUrl: str, confidence: float = 0.75):
     try:
-        pos = pyautogui.locateOnScreen(imgUrl, confidence=0.75)
+        pos = pyautogui.locateOnScreen(imgUrl, confidence=confidence)
         x, y = random_position(pos.left, pos.top, pos.left + pos.width, pos.top + pos.height)
         pyautogui.moveTo(x, y)
         return True
@@ -305,8 +303,6 @@ def open_daily_quest():
     wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
     return
 
-# 1585 600
-
 def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int = 1, timeout: float = 300.0, interval: float = 0.25, sleep: float = 0.5, stop_image_path: str | None = None) -> bool:
     start_time = time.time()
     pyautogui.moveTo(mouse_pos.x, mouse_pos.y)
@@ -348,9 +344,16 @@ def do_daily_main(gemColor: str):
     open_menu()
     return
 
-def open_af(af_image_path: str): 
-    wait_n_click('./imgs/buttons/arcane-power-field.png')
-    search_n_scroll_n_click(af_image_path, MousePos(1585, 600))
+def open_farm(farm_image_path: str, farm_image_stop_path: str):
+    if "buttons/af-" in farm_image_path:
+        wait_n_click('./imgs/buttons/arcane-power-field.png')
+    elif "buttons/sf-" in farm_image_path:
+        wait_n_click('./imgs/buttons/star-force-field.png')
+    else:
+        print("Unknown type")
+        return
+
+    search_n_scroll_n_click(farm_image_path, MousePos(1585, 600))
     
     found_no_party = locate('./imgs/buttons/af-no-party.png')
 
@@ -364,52 +367,18 @@ def open_af(af_image_path: str):
         wait_n_click('./imgs/buttons/start.png')
         return
     
-    party_paths = [
-        ('./imgs/buttons/af-party-5.png', -1),
-        ('./imgs/buttons/af-party-4.png', 1),
-        ('./imgs/buttons/af-party-3.png', -1),
-        ('./imgs/buttons/af-party-2.png', 1),
-        ('./imgs/buttons/af-party-1.png', -1),
-    ]
-
-    for path, direction in party_paths:
-        if search_n_scroll_n_click(path, MousePos(1585, 600), direction, stop_image_path='./imgs/buttons/af-more-party.png'):
-            break
-        
-    wait_n_click('./imgs/buttons/apply.png')
-    wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/auto-battle.png')
-    put_cursor_away()
-    wait_n_click('./imgs/buttons/auto-battle.png')
-    wait_n_click('./imgs/buttons/start.png')
-    return
-
-def open_sf(sf_image_path: str): 
-    wait_n_click('./imgs/buttons/star-force-field.png')
-    search_n_scroll_n_click(sf_image_path, MousePos(1585, 600))
-    
-    found_no_party = locate('./imgs/buttons/af-no-party.png')
-
-    if found_no_party:  # same as "if found_no_party == True"
-        wait_n_click('./imgs/buttons/create.png')
-        put_cursor_away()
-        wait_n_click('./imgs/buttons/create-orange.png')
-        wait_n_click('./imgs/buttons/auto-battle.png')
-        put_cursor_away()
-        wait_n_click('./imgs/buttons/auto-battle.png')
-        wait_n_click('./imgs/buttons/start.png')
-        return
+    default_stop_image_path = './imgs/buttons/view-more-party.png'
     
     party_paths = [
-        ('./imgs/buttons/af-party-5.png', -1),
-        ('./imgs/buttons/af-party-4.png', 1),
-        ('./imgs/buttons/af-party-3.png', -1),
-        ('./imgs/buttons/af-party-2.png', 1),
-        ('./imgs/buttons/af-party-1.png', -1),
+        ('./imgs/buttons/af-party-5.png', -1, default_stop_image_path),
+        ('./imgs/buttons/af-party-4.png', 1, farm_image_stop_path),
+        ('./imgs/buttons/af-party-3.png', -1, default_stop_image_path),
+        ('./imgs/buttons/af-party-2.png', 1, farm_image_stop_path),
+        ('./imgs/buttons/af-party-1.png', -1, default_stop_image_path),
     ]
 
-    for path, direction in party_paths:
-        if search_n_scroll_n_click(path, MousePos(1585, 600), direction, stop_image_path='./imgs/buttons/af-more-party.png'):
+    for path, direction, stop_path in party_paths:
+        if search_n_scroll_n_click(path, MousePos(1585, 600), direction, stop_image_path=stop_path):
             break
         
     wait_n_click('./imgs/buttons/apply.png')
@@ -437,24 +406,13 @@ def turn_pc_off():
     click()
     return
 
-def do_overnight_farming_af():
-    open_change_character('./imgs/characters/Nyuko.png') # literally any character you don't plan on farming with
-    open_menu()
-    open_change_character(farm_data['imgUrl']) 
-    open_menu()
-    open_dungeons()
-    open_af(farm_data['afImgUrl'])
-    quit_this_damn_game()
-    turn_pc_off()
-    return
-
-def do_overnight_farming_sf():
-    # open_change_character('./imgs/characters/Nyuko.png') # literally any character you don't plan on farming with
+def do_overnight_farming():
+    # open_change_character(alt_data[len(alt_data) - 2]['imgUrl']) # literally any character you don't plan on farming with
     # open_menu()
     open_change_character(farm_data['imgUrl']) 
     open_menu()
     open_dungeons()
-    open_sf(farm_data['afImgUrl'])
+    open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
     quit_this_damn_game()
     turn_pc_off()
     return
