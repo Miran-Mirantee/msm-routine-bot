@@ -28,13 +28,13 @@ def main():
     start_time = time.time()  # Start timer
         
     open_menu()
-    # 47.35 mins
     for char in main_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
         open_change_character(char['imgUrl'])
         do_daily_main(char['gemColor'])
     
+    # 47.35 mins
     for char in alt_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
@@ -282,8 +282,9 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
         
     wait_n_click('./imgs/buttons/apply.png')
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/auto-battle.png')
-    put_cursor_away()
+    # wait_n_click('./imgs/buttons/auto-battle.png')
+    # put_cursor_away()
+    wait_n_click('./imgs/buttons/close-menu.png', wait=3)
     wait_n_click('./imgs/buttons/auto-battle.png')
     wait_n_click('./imgs/buttons/start.png')
     return
