@@ -2,13 +2,16 @@ import pyautogui
 import time
 import json
 from datetime import datetime
-from util import wait_n_click, search_n_scroll_n_click, search_char, put_cursor_away, locate, click
+from util import wait_n_click, search_n_scroll_n_click, search_char, put_cursor_away, locate, click, wait
+from sf import do_sf
 from models import MousePos
 
 # TODO:
 # - do elite dungeon the entire account (is this a good idea?)
 
 # BUG:
+# - doesn't farm and get kicked sometimes
+
 
 # Load data
 with open("./json/alt.json", "r") as f:
@@ -18,14 +21,14 @@ with open("./json/main.json", "r") as f:
 with open("./json/farm.json", "r") as f:
     farm_data = json.load(f)
 
-last_click_time = None  # Stores the timestamp of the last click
-
 def main():
     print('Starting...')
     pyautogui.FAILSAFE = True
     time.sleep(3)
-    
+        
     start_time = time.time()  # Start timer
+    
+    # open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
         
     open_menu()
     for char in main_data:
@@ -43,10 +46,15 @@ def main():
     
     end_time = time.time()  # End timer
     elapsed_time = end_time - start_time
-
     print(f"Execution time: {elapsed_time:.4f} seconds")
     
     do_overnight_farming()
+    
+    # open_menu()
+    # do_sf()
+    
+    quit_this_damn_game()
+    turn_pc_off()
     
 def open_menu(): 
     wait_n_click('./imgs/buttons/menu.png')
@@ -284,6 +292,7 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
     wait_n_click('./imgs/buttons/confirm.png')
     # wait_n_click('./imgs/buttons/auto-battle.png')
     # put_cursor_away()
+    wait('./imgs/buttons/forged.png', confidence=0.85, sleep=1)
     wait_n_click('./imgs/buttons/close-menu.png', wait=3)
     wait_n_click('./imgs/buttons/auto-battle.png')
     wait_n_click('./imgs/buttons/start.png')
@@ -313,8 +322,6 @@ def do_overnight_farming():
     open_menu()
     open_dungeons()
     open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
-    quit_this_damn_game()
-    turn_pc_off()
     return
     
 if __name__ == "__main__":

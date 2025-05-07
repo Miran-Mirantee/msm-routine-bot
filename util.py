@@ -71,7 +71,7 @@ def wait_n_click(image_path: str, timeout: float = 300.0, interval: float = 1, c
         # pyautogui.moveRel(100, 100)
         time.sleep(interval)  # Wait before checking again
         
-def wait_n_match_n_click(image_path: str, confidence: float = 0.85, timeout: float = 5, interval: float = 0.5, wait: float = 0.0, sleep: float = 0.0) -> bool:
+def wait_n_match_n_click(image_path: str, confidence: float = 0.85, timeout: float = 5, interval: float = 2.5, wait: float = 0.0, sleep: float = 0.0) -> bool:
     start_time = time.time()
     time.sleep(sleep)
     
@@ -99,7 +99,7 @@ def wait_n_match_n_click(image_path: str, confidence: float = 0.85, timeout: flo
         
         # set threshold and get all matches
         loc = np.where(correlation >= confidence)
-        print(len(loc[0]),  len(loc[1]))
+        # print(len(loc[0]), len(loc[1]))
         
         if len(loc[0]) == 0 or len(loc[1]) == 0:
             put_cursor_away(1895, 1910, 266, 900, 0)
