@@ -29,7 +29,7 @@ def main():
     start_time = time.time()  # Start timer
     
     # open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
-        
+    
     open_menu()
     for char in main_data:
         # search_char(char['imgUrl'])
@@ -55,6 +55,24 @@ def main():
     
     quit_this_damn_game()
     turn_pc_off()
+    
+def main2():
+    print('Farming red meso...')
+    pyautogui.FAILSAFE = True
+    time.sleep(3)
+        
+    start_time = time.time()  # Start timer
+    
+    for char in alt_data:
+        # search_char(char['imgUrl'])
+        print(char['imgUrl'])
+        open_change_character(char['imgUrl'])
+        farm_red_meso()
+    
+    end_time = time.time()  # End timer
+    elapsed_time = end_time - start_time
+    print(f"Execution time: {elapsed_time:.4f} seconds")
+    
     
 def open_menu(): 
     wait_n_click('./imgs/buttons/menu.png')
@@ -110,7 +128,7 @@ def open_change_character(img_url: str):
 def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/guild.png', wait=1.5)
     if do_elite:
-        wait_n_click('./imgs/buttons/guild-claim.png', timeout=2)
+        res = wait_n_click('./imgs/buttons/guild-claim.png', timeout=2)
     else:
         time.sleep(1)
         
@@ -118,7 +136,7 @@ def open_guild(do_elite: bool):
     
     if do_elite:
         pyautogui.press('esc')
-    return
+    return not res
 
 def do_daily_alt(do_elite: bool, elite_lvl: int | None, do_cdd: bool):
     open_menu()
@@ -323,6 +341,27 @@ def do_overnight_farming():
     open_dungeons()
     open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
     return
+   
+def farm_red_meso():
+    open_menu()
+    is_claim = open_guild(True)
+    if (not is_claim):
+        open_mail()
+    else:
+        put_cursor_away(duration=0.5)
+    open_menu()
+    open_dungeons()
+    open_nett()
+    open_menu()
+    return
     
+def open_nett():
+    wait_n_click('./imgs/buttons/nett.png')
+    wait_n_click('./imgs/buttons/quick-party-search.png')
+    wait_n_click('./imgs/buttons/confirm.png')
+    wait_n_click('./imgs/buttons/nett-exit.png')
+    return
+ 
 if __name__ == "__main__":
-    main()
+    # main()
+    main2() # temporary
