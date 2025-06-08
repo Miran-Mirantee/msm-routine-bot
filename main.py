@@ -10,8 +10,6 @@ from models import MousePos
 # - do elite dungeon the entire account (is this a good idea?)
 
 # BUG:
-# - doesn't farm and get kicked sometimes
-
 
 # Load data
 with open("./json/alt.json", "r") as f:
@@ -20,6 +18,8 @@ with open("./json/main.json", "r") as f:
     main_data = json.load(f)
 with open("./json/farm.json", "r") as f:
     farm_data = json.load(f)
+with open("./json/nett.json", "r") as f:
+    nett_data = json.load(f)
 
 def main():
     print('Starting...')
@@ -31,6 +31,9 @@ def main():
     # open_farm(farm_data['farmImgUrl'], farm_data['searchStopImgUrl'])
     
     open_menu()
+    
+    # mass_farm_red_meso()
+    
     for char in main_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
@@ -56,14 +59,11 @@ def main():
     quit_this_damn_game()
     turn_pc_off()
     
-def main2():
+def mass_farm_red_meso():
     print('Farming red meso...')
-    pyautogui.FAILSAFE = True
-    time.sleep(3)
-        
     start_time = time.time()  # Start timer
     
-    for char in alt_data:
+    for char in nett_data:
         # search_char(char['imgUrl'])
         print(char['imgUrl'])
         open_change_character(char['imgUrl'])
@@ -127,6 +127,7 @@ def open_change_character(img_url: str):
 
 def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/guild.png', wait=1.5)
+    res = True
     if do_elite:
         res = wait_n_click('./imgs/buttons/guild-claim.png', timeout=2)
     else:
@@ -352,6 +353,7 @@ def farm_red_meso():
     open_menu()
     open_dungeons()
     open_nett()
+    time.sleep(1.5)
     open_menu()
     return
     
@@ -363,5 +365,4 @@ def open_nett():
     return
  
 if __name__ == "__main__":
-    # main()
-    main2() # temporary
+    main()
