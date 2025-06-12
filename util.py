@@ -11,10 +11,17 @@ def random_position(minX, minY, maxX, maxY):
     return x, y  # Return as an array
 
 def click(): 
-    rand = random.uniform(0.1, 0.25)
+    rand = random.uniform(0.1014, 0.314)
     pyautogui.mouseDown()
     time.sleep(rand)
     pyautogui.mouseUp()
+    return
+
+def keyPress(key):
+    rand = random.uniform(0.1014, 0.314)
+    pyautogui.keyDown(key)
+    time.sleep(rand)
+    pyautogui.keyUp(key)
     return
 
 def human_pause(): 

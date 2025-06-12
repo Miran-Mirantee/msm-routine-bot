@@ -2,7 +2,7 @@ import pyautogui
 import time
 import json
 from datetime import datetime
-from util import wait_n_click, search_n_scroll_n_click, search_char, put_cursor_away, locate, click, wait
+from util import wait_n_click, search_n_scroll_n_click, search_char, put_cursor_away, locate, click, wait, keyPress
 from sf import do_sf
 from models import MousePos
 
@@ -136,7 +136,7 @@ def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/close.png')
     
     if do_elite:
-        pyautogui.press('esc')
+        keyPress('esc')
     return not res
 
 def do_daily_alt(do_elite: bool, elite_lvl: int | None, do_cdd: bool):
@@ -319,7 +319,7 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
 
 def quit_this_damn_game():
     time.sleep(5)
-    pyautogui.press('esc')
+    keyPress('esc')
     put_cursor_away()
     wait_n_click('./imgs/buttons/yes.png')
     return
