@@ -242,13 +242,14 @@ def open_tasks_main():
 def open_daily_quest():
     wait_n_click('./imgs/buttons/daily-quest.png')
     wait_n_click('./imgs/buttons/daily-quest-progress.png')
-    wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
-    wait_n_click('./imgs/buttons/confirm.png')
+    # wait_n_click('./imgs/buttons/daily-quest-1.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-2.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-3.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-4.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-5.png', confidence=0.95, timeout=1)
+    # wait_n_click('./imgs/buttons/daily-quest-6.png', confidence=0.95, timeout=1)
+    wait_n_click('./imgs/buttons/daily-quest-sweep.png')
+    wait_n_click('./imgs/buttons/daily-quest-sweep-confirm.png')
     wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
     return
 
