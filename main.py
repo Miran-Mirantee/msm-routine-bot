@@ -217,7 +217,8 @@ def open_dimension_invasion():
 
 def open_mini_dungeon():
     wait_n_click('./imgs/buttons/mini-dungeon.png')
-    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=2)
+    put_cursor_away()
+    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=3)
     wait_n_click('./imgs/buttons/mini-dungeon-auto-select.png')
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
