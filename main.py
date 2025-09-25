@@ -84,13 +84,14 @@ def open_dungeons():
 
 def open_elite_dungeon(elite_lvl: int | None):
     wait_n_click('./imgs/buttons/elite-dungeon.png')
-    if (elite_lvl == 200):
-        wait_n_click('./imgs/buttons/elite-dungeon-200.png', confidence=0.9)
-    elif (elite_lvl == 190):
-        wait_n_click('./imgs/buttons/elite-dungeon-190.png', confidence=0.9)
-    wait_n_click('./imgs/buttons/elite-dungeon-create-room.png')
+    # if (elite_lvl == 200):
+    #     wait_n_click('./imgs/buttons/elite-dungeon-200.png', confidence=0.9)
+    # elif (elite_lvl == 190):
+    #     wait_n_click('./imgs/buttons/elite-dungeon-190.png', confidence=0.9)
+    # wait_n_click('./imgs/buttons/elite-dungeon-create-room.png')
+    wait_n_click('./imgs/buttons/elite-dungeon-enter.png')
     wait_n_click('./imgs/buttons/confirm.png')
-    wait_n_click('./imgs/buttons/elite-dungeon-start.png')
+    # wait_n_click('./imgs/buttons/elite-dungeon-start.png')
     wait_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png')
     wait_n_click('./imgs/buttons/back.png')
     return
@@ -105,8 +106,8 @@ def open_daily_dungeon():
 def open_mail(): 
     wait_n_click('./imgs/buttons/mail.png')
     wait_n_click('./imgs/buttons/mail-personal.png')
-    wait_n_click('./imgs/buttons/mail-receive.png', timeout=2)
-    wait_n_click('./imgs/buttons/confirm.png', timeout=2)
+    wait_n_click('./imgs/buttons/mail-receive.png', timeout=5)
+    wait_n_click('./imgs/buttons/confirm.png', timeout=5)
     wait_n_click('./imgs/buttons/close.png')
     return
 
@@ -262,7 +263,8 @@ def do_daily_main(gemColor: str):
     open_mail()
     open_menu()
     open_dungeons()
-    open_elite_dungeon_main()
+    # open_elite_dungeon_main()
+    open_elite_dungeon(None)
     open_daily_dungeon_main(gemColor)
     open_dimension_invasion()
     open_mini_dungeon()
