@@ -254,6 +254,7 @@ def open_daily_quest():
     wait_n_click('./imgs/buttons/daily-quest-sweep-confirm.png', wait=1)
     wait_n_click('./imgs/buttons/confirm.png', timeout=1200, wait=4)
     wait_n_click('./imgs/buttons/close.png', wait=1)
+    put_cursor_away()
     wait_n_click('./imgs/buttons/close-menu.png',)
     return
 
