@@ -137,6 +137,7 @@ def open_guild(do_elite: bool):
     wait_n_click('./imgs/buttons/close.png')
     
     if do_elite:
+        # will change this to mouse press later
         keyPress('esc')
     return not res
 
@@ -285,6 +286,7 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
         print("Unknown type")
         return
 
+    put_cursor_away()
     search_n_scroll_n_click(farm_image_path, MousePos(1585, 600))
     
     time.sleep(0.5)
