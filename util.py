@@ -146,7 +146,11 @@ def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25)
             return True  # Image found, exit loop
         except pyautogui.ImageNotFoundException:
             pass
-        pyautogui.scroll(1)
+        # pyautogui.scroll(1)
+        pyautogui.mouseDown()
+        pyautogui.moveRel(xOffset=0, yOffset=300, duration=0.5)
+        pyautogui.mouseUp()
+        pyautogui.moveRel(xOffset=0, yOffset=-300)
         time.sleep(interval)  # Wait before checking again
     
 def put_cursor_away(minX: int = 499, maxX: int = 1416, minY: int = 3, maxY: int = 93, duration: int = 2):
