@@ -199,9 +199,9 @@ def open_daily_dungeon_main(gemColor: str):
         elif gemColor == "yellow":
             wait_n_click('./imgs/buttons/daily-dungeon-yellow.png')
         wait_n_click('./imgs/buttons/daily-dungeon-option-2.png')
-        wait_n_click('./imgs/buttons/daily-dungeon-enter-special.png')
+        wait_n_click('./imgs/buttons/enter.png')
     else:
-        wait_n_click('./imgs/buttons/daily-dungeon-enter-normal.png')
+        wait_n_click('./imgs/buttons/enter.png')
         wait_n_click('./imgs/buttons/daily-dungeon-minus.png')
 
     wait_n_click('./imgs/buttons/confirm.png')
