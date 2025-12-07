@@ -147,11 +147,14 @@ def search_char(image_path: str, timeout: float = 300.0, interval: float = 0.25)
         except pyautogui.ImageNotFoundException:
             pass
         # pyautogui.scroll(1)
-        pyautogui.mouseDown()
-        pyautogui.moveRel(xOffset=0, yOffset=300, duration=0.5)
-        pyautogui.mouseUp()
-        pyautogui.moveRel(xOffset=0, yOffset=-300)
+        dragging()
         time.sleep(interval)  # Wait before checking again
+
+def dragging(direction: int = 1): # 1 is up, -1 is down
+    pyautogui.mouseDown()
+    pyautogui.moveRel(xOffset=0, yOffset=300 * direction, duration=0.5)
+    pyautogui.mouseUp()
+    pyautogui.moveRel(xOffset=0, yOffset=-300 * direction)
     
 def put_cursor_away(minX: int = 499, maxX: int = 1416, minY: int = 3, maxY: int = 93, duration: int = 2):
     pyautogui.moveTo(random.randint(minX, maxX),random.randint(minY, maxY), duration=duration)
@@ -178,5 +181,6 @@ def search_n_scroll_n_click(image_path: str, mouse_pos: MousePos, direction: int
             res = locate(stop_image_path)
             if res:
                 return False
-        pyautogui.scroll(1 * direction)
+        dragging(direction)
+        # pyautogui.scroll(1 * direction)
         time.sleep(interval)  # Wait before checking again
