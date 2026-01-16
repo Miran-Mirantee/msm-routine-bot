@@ -225,8 +225,8 @@ def open_mini_dungeon():
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
     put_cursor_away()
-    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=5)
     wait_n_click('./imgs/buttons/ab-confirm.png', wait=2)
+    wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=5)
     # locate_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png') # this works too, just in case
     return
 
@@ -282,6 +282,8 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
         wait_n_click('./imgs/buttons/arcane-power-field.png')
     elif "buttons/sf-" in farm_image_path:
         wait_n_click('./imgs/buttons/star-force-field.png')
+    elif "buttons/spf-" in farm_image_path:
+        wait_n_click('./imgs/buttons/sacred-power-field.png')
     else:
         print("Unknown type")
         return
@@ -334,7 +336,7 @@ def quit_this_damn_game():
     return
 
 def turn_pc_off():
-    wait_n_click('./imgs/desktop-buttons/window.png', sleep=1)
+    wait_n_click('./imgs/desktop-buttons/window.png', sleep=5)
     wait_n_click('./imgs/desktop-buttons/power.png')
     time.sleep(1)
     # wait_n_click('./imgs/desktop-buttons/sleep.png')

@@ -11,7 +11,7 @@ def random_position(minX, minY, maxX, maxY):
     return x, y  # Return as an array
 
 def click(): 
-    rand = random.uniform(0.1014, 0.314)
+    rand = random.uniform(0.2514, 0.314)
     pyautogui.mouseDown()
     time.sleep(rand)
     pyautogui.mouseUp()
