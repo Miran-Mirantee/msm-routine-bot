@@ -225,8 +225,9 @@ def open_mini_dungeon():
     wait_n_click('./imgs/buttons/enter.png')
     wait_n_click('./imgs/buttons/enter.png')
     put_cursor_away()
-    wait_n_click('./imgs/buttons/ab-confirm.png', wait=2)
     wait_n_click('./imgs/buttons/mini-dungeon-final-result-exit.png', timeout=900, wait=5)
+    put_cursor_away()
+    wait_n_click('./imgs/buttons/ab-confirm.png', wait=2)
     # locate_n_click('./imgs/buttons/elite-dungeon-go-to-menu.png') # this works too, just in case
     return
 
