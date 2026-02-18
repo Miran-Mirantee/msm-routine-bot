@@ -299,6 +299,8 @@ def open_farm(farm_image_path: str, farm_image_stop_path: str):
         wait_n_click('./imgs/buttons/create.png')
         put_cursor_away()
         wait_n_click('./imgs/buttons/create-orange.png')
+        wait('./imgs/buttons/forged.png', confidence=0.85, sleep=1)
+        wait_n_click('./imgs/buttons/close-menu.png', wait=3)
         wait_n_click('./imgs/buttons/auto-battle.png')
         put_cursor_away()
         wait_n_click('./imgs/buttons/auto-battle.png')
